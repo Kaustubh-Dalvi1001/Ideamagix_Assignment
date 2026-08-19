@@ -10,9 +10,6 @@ const userSchema = new Schema({
     unique: true,
     required: true,
     validate(value) {
-      if (!value) {
-        throw new Error("User name is required.");
-      }
       if (value.length > 30) {
         throw new Error("User name cannot be more than 30 characters.");
       }
@@ -24,11 +21,8 @@ const userSchema = new Schema({
     minLength: 8,
     maxLength: 50,
     required: true,
+    trim: true,
     validate(value) {
-      if (!value) {
-        throw new Error("Password is required.");
-      }
-
       if (value.length < 8) {
         throw new Error("Password must be atleast of 8 characters.");
       }
@@ -51,11 +45,6 @@ const userSchema = new Schema({
     lowercase: true,
     required: true,
     enum: ["admin", "instructor"],
-    validate(value) {
-      if (!value) {
-        throw new Error("Role is required.");
-      }
-    },
   },
 });
 

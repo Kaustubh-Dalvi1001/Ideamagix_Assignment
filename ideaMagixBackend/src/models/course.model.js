@@ -6,6 +6,7 @@ const courseSchema = new Schema({
     type: String,
     required: true,
     maxLength: 30,
+    trim: true,
     unique: true,
   },
   level: {
@@ -19,11 +20,13 @@ const courseSchema = new Schema({
   description: {
     type: String,
     required: true,
+    trim: true,
     maxLength: 200,
   },
   image: {
     type: String,
     required: true,
+    trim: true,
     validate(value) {
       if (value && !validator.isURL(value)) {
         throw new Error("Cloudinary image URL is invalid.");
