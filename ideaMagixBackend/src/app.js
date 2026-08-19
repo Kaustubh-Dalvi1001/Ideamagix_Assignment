@@ -3,7 +3,7 @@ import express from "express";
 import { connectDb } from "./config/db.js";
 import { authRouter } from "./routes/authRouter.js";
 import cookieParser from "cookie-parser";
-import { courseRouter } from "./routes/courseRouter.js";
+import { adminRouter } from "./routes/adminRouter.js";
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/", authRouter);
-app.use("/", courseRouter);
+app.use("/", adminRouter);
 
 const startServer = () => {
   app.listen(3000, () => {

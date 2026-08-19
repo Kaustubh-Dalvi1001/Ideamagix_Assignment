@@ -1,5 +1,6 @@
 import cloudinary from "../config/cloudinary.js";
 import { CourseModel } from "../models/course.model.js";
+import { LectureModel } from "../models/lecture.model.js";
 
 export const addCourse = async (req, res) => {
   try {
@@ -41,9 +42,37 @@ export const addCourse = async (req, res) => {
     res.json({ message: `New course added: ${course.name}`, course });
   } catch (error) {
     if (error.code === 11000) {
-      res.status(409).json({ message: "A course with this name already exists." });
+      return res.status(409).json({ message: "A course with this name already exists." });
     }
     console.error(`Error in adding new course: ${error}`);
     res.status(400).json({ message: `Error in adding new course: ${error.message}` });
+  }
+};
+
+export const addLecture = async (req, res) => {
+  try {
+    const { course, instructor, date } = req.body;
+    if (!course || !instructor || !date) {
+      return res.status(400).json({ message: "course, instructor and date is manditory." });
+    }
+
+    const lecture = await LectureModel.create({ course, instructor, date });
+
+    await CourseModel.findByIdAndUpdate(course, {
+      $push: { lectures: lecture._id },
+    });
+
+    const populateLecture = await lecture.populate([
+      { path: "course", select: "name" },
+      { path: "instructor", select: "userName" },
+    ]);
+
+    res.json({ message: "Lecture added successfully.", lecture: populateLecture });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(409).json({ message: "This slot clashes with an existing lecture." });
+    }
+    console.error(`Error in adding a lecture: ${error}`);
+    res.status(400).json({ message: `Error in adding a lecture ${error.message}` });
   }
 };
