@@ -40,4 +40,4 @@ const courseSchema = new Schema({
   },
 });
 
-export const courseModel = model("Course", courseSchema);
+export const CourseModel = model("Course", courseSchema);

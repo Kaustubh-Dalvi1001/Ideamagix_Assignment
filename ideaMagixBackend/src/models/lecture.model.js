@@ -44,4 +44,4 @@ lectureSchema.index(
   },
 );
 
-export const lectureModel = model("Lecture", lectureSchema);
+export const LectureModel = model("Lecture", lectureSchema);
