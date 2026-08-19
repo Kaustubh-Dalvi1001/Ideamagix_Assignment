@@ -30,13 +30,13 @@ export const login = async (req, res) => {
     const user = await UserModel.findOne({ userName });
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid crediantials." });
+      return res.status(401).json({ message: "Invalid credentials." });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid, crediantials." });
+      return res.status(401).json({ message: "Invalid, credentials." });
     }
 
     const token = user.getJWT();
@@ -46,5 +46,15 @@ export const login = async (req, res) => {
   } catch (error) {
     console.error(`Error in login: ${error}`);
     res.status(500).json({ message: "Something went wrong during login." });
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("token", { httpOnly: true });
+    res.json({ message: "User logged out successfully." });
+  } catch (error) {
+    console.error(`Error in logging out: ${error}`);
+    res.status(400).json({ message: `Error in logging out ${error.message}` });
   }
 };
