@@ -1,10 +1,10 @@
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { removeUser, addUser } from "../store/userSlice";
 import { toast } from "react-toastify";
-import { getProfile } from "./api";
+import { getProfile, logout } from "./api";
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -52,11 +52,30 @@ const Body = () => {
     }
   });
 
+  const { mutate: logoutMutate } = useMutation({
+    mutationFn: logout,
+    onSuccess: (data) => {
+      toast.success(data.message);
+    },
+    onError: (error) => {
+      console.error(`Error in logging out ${error}`);
+      const errorMessage = error?.response?.data?.message || error?.message || "Erorr in logging out.";
+      toast.error(errorMessage);
+    },
+  });
+
+  const handleLogout = () => {
+    queryClient.clear();
+    dispatch(removeUser());
+    logoutMutate();
+    navigate("/login");
+  };
+
   return (
     <div className="flex flex-col h-screen">
       {/* Navbar */}
       <div className="navbar bg-base-200 shadow-sm">
-        <div>
+        {profile && (
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
               <svg
@@ -85,11 +104,11 @@ const Body = () => {
                 <a>{profile?.role}</a>
               </li>
               <li>
-                <a>Logout</a>
+                <button onClick={handleLogout}>Logout</button>
               </li>
             </ul>
           </div>
-        </div>
+        )}
         <span className="text-xl font-medium"> Ideamagix Assignment </span>
       </div>
       {/* content */}
