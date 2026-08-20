@@ -9,7 +9,12 @@ export const signUp = async (req, res) => {
     const token = savedUser.getJWT();
     res.cookie("token", token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
     res.json({
-      message: `${savedUser.role} created successfully.`,
+      message: `Signed up successfully.`,
+      user: {
+        _id: savedUser._id,
+        userName: savedUser.userName,
+        role: savedUser.role,
+      },
     });
   } catch (error) {
     if (error.code === 11000) {

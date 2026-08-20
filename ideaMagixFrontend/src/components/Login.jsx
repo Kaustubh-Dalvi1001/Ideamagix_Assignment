@@ -1,8 +1,9 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const Login = () => {
   return (
-    <div>
+    <div className="flex justify-center items-center h-full">
       <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
         <legend className="fieldset-legend">Login</legend>
 
@@ -11,6 +12,13 @@ const Login = () => {
 
         <label className="label">Password</label>
         <input type="password" className="input" placeholder="Password" />
+
+        <p className="text-center text-sm text-gray-500 mt-4">
+          Don't have an account?
+          <NavLink to="/signup" className="link link-primary">
+            Sign Up
+          </NavLink>
+        </p>
 
         <button className="btn btn-neutral mt-4">Login</button>
       </fieldset>

@@ -5,8 +5,16 @@ import { authRouter } from "./routes/authRouter.js";
 import cookieParser from "cookie-parser";
 import { adminRouter } from "./routes/adminRouter.js";
 import { instructorRouter } from "./routes/instructorRouter.js";
+import cors from "cors";
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 
