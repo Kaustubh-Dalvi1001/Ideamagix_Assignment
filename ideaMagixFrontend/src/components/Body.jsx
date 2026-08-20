@@ -49,6 +49,8 @@ const Body = () => {
   useEffect(() => {
     if (status === "authenticated" && location.pathname === "/" && profile.role === "admin") {
       navigate("/admin");
+    } else if (status === "authenticated" && location.pathname === "/" && profile.role === "instructor") {
+      navigate("/instructor");
     }
   });
 

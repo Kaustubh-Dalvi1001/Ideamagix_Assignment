@@ -24,3 +24,16 @@ export const loginFn = async (userData) => {
   const response = await api.post("/login", userData);
   return response.data;
 };
+
+export const addCourseFn = async (data) => {
+  const formData = new FormData();
+  formData.append("name", data.name);
+  formData.append("level", data.level);
+  formData.append("description", data.description);
+  formData.append("photo", data.photo[0]);
+
+  const response = await api.post("/addCourse", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return response.data;
+};
