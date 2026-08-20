@@ -1,13 +1,56 @@
-import { Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { removeUser, addUser } from "../store/userSlice";
+import { toast } from "react-toastify";
+import { getProfile } from "./api";
 
 const Body = () => {
-  const storeUser = useSelector((store) => store.userReducer);
-  console.log(storeUser);
-  console.log(document.cookie);
-  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { status, profile } = useSelector((store) => store.userReducer);
+  // console.log(profile);
 
-  // const { _id, userName, role } = storeUser;
+  const location = useLocation();
+
+  const {
+    data: profileData,
+    isError,
+    error: profileError,
+  } = useQuery({
+    queryKey: ["userProfile"],
+    queryFn: getProfile,
+    retry: false,
+    enabled: status === "idle",
+  });
+
+  useEffect(() => {
+    if (isError) {
+      const httpStatus = profileError?.response?.status;
+      const errorMessage =
+        profileError?.response?.data?.message || profileError?.message || "Erorr in fetching user.";
+      if (httpStatus === 401) {
+        dispatch(removeUser());
+        queryClient.clear();
+        toast.error(errorMessage);
+        navigate("/login");
+      }
+    }
+  }, [isError, profileError, dispatch, queryClient, navigate]);
+
+  useEffect(() => {
+    if (profileData?.user) {
+      dispatch(addUser(profileData.user));
+    }
+  }, [profileData, dispatch]);
+
+  useEffect(() => {
+    if (status === "authenticated" && location.pathname === "/" && profile.role === "admin") {
+      navigate("/admin");
+    }
+  });
 
   return (
     <div className="flex flex-col h-screen">
@@ -36,10 +79,10 @@ const Body = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li className="disabled">
-                <a>userName</a>
+                <a>{profile?.userName}</a>
               </li>
               <li className="disabled">
-                <a>role</a>
+                <a>{profile?.role}</a>
               </li>
               <li>
                 <a>Logout</a>

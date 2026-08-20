@@ -9,3 +9,8 @@ export const signUp = async (userData) => {
   const response = await api.post("/signup", userData);
   return response.data;
 };
+
+export const getProfile = async () => {
+  const response = await api.get("/profile");
+  return response.data;
+};
