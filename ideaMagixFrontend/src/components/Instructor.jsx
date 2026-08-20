@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAssignedLecturesFn } from "./api";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const Instructor = () => {
   const {

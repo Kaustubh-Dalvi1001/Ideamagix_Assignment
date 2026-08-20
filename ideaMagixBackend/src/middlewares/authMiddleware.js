@@ -10,10 +10,10 @@ export const userAuth = async (req, res, next) => {
 
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await UserModel.findById(decodedToken.id);
+    const user = await UserModel.findById(decodedToken.id).select("-password");
 
     if (!user) {
-     return res.status(401).json({ message: "No user found." });
+      return res.status(401).json({ message: "No user found." });
     }
 
     req.user = user;

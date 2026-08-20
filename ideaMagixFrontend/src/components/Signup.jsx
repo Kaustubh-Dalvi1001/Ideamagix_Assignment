@@ -24,7 +24,7 @@ const Signup = () => {
     },
     onError: (error) => {
       console.error(`Error in signup: ${error}`);
-      const errorMessage = error.response.data.message || error.message;
+      const errorMessage = error?.response?.data?.message || error?.message || "Error in signup.";
       toast.error(`Error in signup. ${errorMessage}`);
     },
   });

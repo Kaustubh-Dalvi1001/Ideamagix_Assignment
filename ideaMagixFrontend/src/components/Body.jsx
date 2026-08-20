@@ -52,7 +52,7 @@ const Body = () => {
     } else if (status === "authenticated" && location.pathname === "/" && profile.role === "instructor") {
       navigate("/instructor");
     }
-  });
+  }, [status, location.pathname, profile?.role, navigate]);
 
   const { mutate: logoutMutate } = useMutation({
     mutationFn: logout,
