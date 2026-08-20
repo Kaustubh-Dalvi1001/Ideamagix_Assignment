@@ -9,19 +9,14 @@ import { addUser } from "../store/userSlice";
 const Signup = () => {
   const dispatch = useDispatch();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const navigate = useNavigate();
 
   const { mutate: userSignUp } = useMutation({
     mutationFn: (data) => signUp(data),
     onSuccess: (data) => {
-      console.log(data);
+      // console.log(data);
       dispatch(addUser(data.user));
       toast.success(data.message);
       reset();
@@ -46,7 +41,7 @@ const Signup = () => {
           <legend className="fieldset-legend">Sign Up</legend>
 
           <label className="label">
-            Email <span className="text-red-300">*</span>
+            User Name <span className="text-red-300">*</span>
           </label>
           <input
             {...register("userName")}

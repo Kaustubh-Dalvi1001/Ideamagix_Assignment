@@ -19,3 +19,8 @@ export const logout = async () => {
   const response = await api.post("/logout");
   return response.data;
 };
+
+export const loginFn = async (userData) => {
+  const response = await api.post("/login", userData);
+  return response.data;
+};

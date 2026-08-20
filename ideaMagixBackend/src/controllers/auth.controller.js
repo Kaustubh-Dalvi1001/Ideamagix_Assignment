@@ -47,7 +47,14 @@ export const login = async (req, res) => {
     const token = user.getJWT();
 
     res.cookie("token", token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
-    res.json({ message: `${user.userName} logged in successfully.` });
+    res.json({
+      message: `Logged in successfully.`,
+      user: {
+        _id: user._id,
+        userName: user.userName,
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.error(`Error in login: ${error}`);
     res.status(500).json({ message: "Something went wrong during login." });
