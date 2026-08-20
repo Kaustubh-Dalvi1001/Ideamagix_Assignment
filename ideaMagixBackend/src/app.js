@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { adminRouter } from "./routes/adminRouter.js";
 import { instructorRouter } from "./routes/instructorRouter.js";
 import cors from "cors";
+import { profileRouter } from "./routes/profileRouter.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use("/", authRouter);
 app.use("/", adminRouter);
 app.use("/", instructorRouter);
+app.use("/", profileRouter);
 
 const startServer = () => {
   app.listen(3000, () => {
