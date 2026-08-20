@@ -99,7 +99,7 @@ const Admin = () => {
   const { mutate: addLectureMutate } = useMutation({
     mutationFn: (data) => addLectureFn(data),
     onSuccess: (data) => {
-    //   console.log(data);
+      //   console.log(data);
       toast.success(data.message);
     },
     onError: (error) => {
@@ -131,7 +131,14 @@ const Admin = () => {
               <label className="label">
                 Name <span className="text-red-300">*</span>
               </label>
-              <input {...registerCourse("name")} required type="text" className="input" maxLength={30} />
+              <input
+                {...registerCourse("name")}
+                required
+                type="text"
+                className="input"
+                maxLength={30}
+                placeholder="Enter course name (max 30 characters)"
+              />
             </div>
 
             <div>
@@ -149,7 +156,13 @@ const Admin = () => {
               <label className="label">
                 Description <span className="text-red-300">*</span>
               </label>
-              <textarea {...registerCourse("description")} required className="textarea" maxLength={200} />
+              <textarea
+                {...registerCourse("description")}
+                required
+                className="textarea"
+                maxLength={200}
+                placeholder="Enter course description (max 200 characters)"
+              />
             </div>
 
             <div>

@@ -52,3 +52,8 @@ export const addLectureFn = async (data) => {
   const response = await api.post("/addLecture", data);
   return response.data;
 };
+
+export const getAssignedLecturesFn = async () => {
+  const response = await api.get("/assignedLectures");
+  return response.data;
+};
