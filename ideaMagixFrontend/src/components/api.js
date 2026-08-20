@@ -37,3 +37,18 @@ export const addCourseFn = async (data) => {
   });
   return response.data;
 };
+
+export const getCoursesFn = async () => {
+  const response = await api.get("/courses");
+  return response.data;
+};
+
+export const getInstructorsFn = async () => {
+  const response = await api.get("/instructors");
+  return response.data;
+};
+
+export const addLectureFn = async (data) => {
+  const response = await api.post("/addLecture", data);
+  return response.data;
+};

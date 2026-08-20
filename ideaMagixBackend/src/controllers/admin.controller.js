@@ -1,6 +1,7 @@
 import cloudinary from "../config/cloudinary.js";
 import { CourseModel } from "../models/course.model.js";
 import { LectureModel } from "../models/lecture.model.js";
+import { UserModel } from "../models/user.model.js";
 
 export const addCourse = async (req, res) => {
   try {
@@ -45,7 +46,7 @@ export const addCourse = async (req, res) => {
       return res.status(409).json({ message: "A course with this name already exists." });
     }
     console.error(`Error in adding new course: ${error}`);
-    res.status(400).json({ message: `Error in adding new course: ${error.message}` });
+    res.status(500).json({ message: `Error in adding new course: ${error.message}` });
   }
 };
 
@@ -73,6 +74,26 @@ export const addLecture = async (req, res) => {
       return res.status(409).json({ message: "This slot clashes with an existing lecture." });
     }
     console.error(`Error in adding a lecture: ${error}`);
-    res.status(400).json({ message: `Error in adding a lecture ${error.message}` });
+    res.status(500).json({ message: `Error in adding a lecture ${error.message}` });
+  }
+};
+
+export const getCourses = async (req, res) => {
+  try {
+    const courses = await CourseModel.find({});
+    res.json({ courses });
+  } catch (error) {
+    console.error(`Error in getting courses: ${error}`);
+    res.status(500).json({ message: `Error in getting courses ${error.message}` });
+  }
+};
+
+export const getInstructors = async (req, res) => {
+  try {
+    const instructors = await UserModel.find({ role: "instructor" }).select("_id userName role");
+    res.json({ instructors });
+  } catch (error) {
+    console.error(`Error in getting instructors: ${error}`);
+    res.status(500).json({ message: `Error in getting instructors: ${error.message}` });
   }
 };
